@@ -203,19 +203,25 @@ document.getElementById("content").innerHTML=p.content.replace(/\n/g,"<br>");
 
 }
 
-function adminLogin(){
+function loginAdmin(){
 
-let pass = prompt("Nhập mật khẩu admin:");
+let pass = prompt("Nhập mật khẩu admin");
 
-if(pass==="123456"){
+if(pass === "001"){
+isAdmin = true;
+document.getElementById("adminPanel").style.display="block";
+renderPosts();
+}
 
-document.getElementById("addBtn").style.display="block";
+}
 
-alert("Đăng nhập thành công");
+function logoutAdmin(){
 
-}else{
+isAdmin = false;
 
-alert("Sai mật khẩu");
+document.getElementById("adminPanel").style.display="none";
+
+renderPosts();
 
 }
 
@@ -234,3 +240,4 @@ document.getElementById("formBox").style.display="none";
 
 render();
 
+renderPosts();
