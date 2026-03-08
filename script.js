@@ -1,5 +1,3 @@
-let isAdmin = false;
-
 let posts=JSON.parse(localStorage.getItem("posts"))||[];
 
 let admin=false;
@@ -203,25 +201,19 @@ document.getElementById("content").innerHTML=p.content.replace(/\n/g,"<br>");
 
 }
 
-function loginAdmin(){
+function adminLogin(){
 
-let pass = prompt("Nhập mật khẩu admin");
+let pass = prompt("Nhập mật khẩu admin:");
 
-if(pass === "001"){
-isAdmin = true;
-document.getElementById("adminPanel").style.display="block";
-renderPosts();
-}
+if(pass==="123456"){
 
-}
+document.getElementById("addBtn").style.display="block";
 
-function logoutAdmin(){
+alert("Đăng nhập thành công");
 
-isAdmin = false;
+}else{
 
-document.getElementById("adminPanel").style.display="none";
-
-renderPosts();
+alert("Sai mật khẩu");
 
 }
 
@@ -239,5 +231,3 @@ document.getElementById("formBox").style.display="none";
 }
 
 render();
-
-renderPosts();
