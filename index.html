@@ -1,61 +1,140 @@
+
 <!DOCTYPE html>
 <html>
+
 <head>
+
 <meta charset="UTF-8">
-<title>Luật Chill</title>
+<title>LUẬT CHILL</title>
 
 <style>
 
 body{
-font-family: Times New Roman;
-max-width:800px;
-margin:auto;
-padding:20px;
+margin:0;
+background:#f4f6fb;
+font-family:Times New Roman;
 }
 
-.post{
-border-bottom:1px solid #ccc;
-padding:15px 0;
+/* HEADER */
+
+.topbar{
+background:linear-gradient(135deg,#5f9cff,#4facfe);
+display:grid;
+grid-template-columns:1fr auto 1fr;
+align-items:center;
+padding:18px;
 }
 
-button{
-margin-right:5px;
+/* ADMIN */
+
+.adminBtn{
+justify-self:start;
+background:none;
+border:none;
+color:white;
+font-size:16px;
 cursor:pointer;
 }
 
+/* LOGO */
+
+.logoTitle{
+display:flex;
+align-items:center;
+gap:10px;
+justify-self:center;
+font-family:"Times New Roman",serif;
+}
+
+.logo{
+width:35px;
+}
+
+.logoTitle h1{
+margin:0;
+font-size:32px;
+color:white;
+}
+
+/* CHIBI */
+
+.chibi{
+justify-self:end;
+width:55px;
+}
+
+/* CONTENT */
+
+.container{
+max-width:900px;
+margin:40px auto;
+}
+
+/* ADMIN PANEL */
+
 #adminPanel{
-background:#f5f5f5;
-padding:15px;
+display:none;
 margin-bottom:20px;
 }
 
-textarea{
-width:100%;
-height:150px;
+/* POST */
+
+.post{
+background:white;
+padding:20px;
+margin-bottom:20px;
+border-radius:10px;
+box-shadow:0 5px 15px rgba(0,0,0,0.07);
 }
 
-input{
-width:100%;
-padding:8px;
-margin-bottom:10px;
+.post h2{
+margin:0;
+cursor:pointer;
+}
+
+.actions{
+margin-top:10px;
+display:flex;
+gap:10px;
+}
+
+button{
+padding:6px 12px;
+border:none;
+border-radius:6px;
+cursor:pointer;
 }
 
 </style>
+
 </head>
 
-<body>
 
-<h1>Luật Chill</h1>
+<body onload="renderPosts()">
 
-<button onclick="loginAdmin()">Admin</button>
+<header class="topbar">
 
-<div id="adminPanel" style="display:none;">
+<button onclick="loginAdmin()" class="adminBtn">Admin</button>
+
+<div class="logoTitle">
+<img src="can.png" class="logo">
+<h1>LUẬT CHILL</h1>
+</div>
+
+<img src="chibi.png" class="chibi">
+
+</header>
+
+
+<div class="container">
+
+<div id="adminPanel" style="display:none; margin-bottom:20px;">
 
 <h3>Đăng bài mới</h3>
 
-<input id="titleInput" placeholder="Tiêu đề bài viết">
+<input id="titleInput" placeholder="Tiêu đề bài viết" style="width:100%; padding:8px; margin-bottom:10px;">
 
-<textarea id="contentInput" placeholder="Nội dung bài viết"></textarea>
+<textarea id="contentInput" placeholder="Nội dung bài viết" style="width:100%; height:150px; padding:8px;"></textarea>
 
 <br><br>
 
@@ -64,27 +143,82 @@ margin-bottom:10px;
 
 </div>
 
-<div id="posts"></div>
+<button onclick="addPost()">➕ Đăng bài</button>
+<button onclick="logoutAdmin()">🔙 Thoát admin</button>
+
+</div>
+
+<div id="postList"></div>
+
+</div>
+
 
 <script>
 
-let isAdmin = false;
+let isAdmin=false;
+
+
+function renderPosts(){
+
+const posts = JSON.parse(localStorage.getItem("posts")) || [];
+
+const list=document.getElementById("postList");
+
+list.innerHTML="";
+
+posts.forEach((post,i)=>{
+
+list.innerHTML+=`
+
+<div class="post">
+
+<h2 onclick="openPost(${i})">${post.title}</h2>
+
+<div class="actions">
+
+${isAdmin ? `
+<button onclick="editPost(${i})">✏ Sửa</button>
+<button onclick="deletePost(${i})">🗑 Xóa</button>
+` : ""}
+
+</div>
+
+</div>
+
+`;
+
+});
+
+}
+
+
+function openPost(id){
+
+window.location.href="post.html?id="+id;
+
+}
+
 
 function loginAdmin(){
 
-let pass = prompt("Nhập mật khẩu admin");
+const pass=prompt("Nhập mật khẩu admin");
 
-if(pass === "123"){
-isAdmin = true;
+if(pass==="123456"){
+
+isAdmin=true;
+
 document.getElementById("adminPanel").style.display="block";
+
 renderPosts();
+
 }
 
 }
+
 
 function logoutAdmin(){
 
-isAdmin = false;
+isAdmin=false;
 
 document.getElementById("adminPanel").style.display="none";
 
@@ -92,17 +226,16 @@ renderPosts();
 
 }
 
+
 function addPost(){
 
-const title = document.getElementById("titleInput").value;
-const content = document.getElementById("contentInput").value;
+const title=prompt("Tiêu đề");
 
-if(!title || !content){
-alert("Nhập đủ tiêu đề và nội dung");
-return;
-}
+const content=prompt("Nội dung");
 
-const posts = JSON.parse(localStorage.getItem("posts")) || [];
+if(!title||!content) return;
+
+const posts=JSON.parse(localStorage.getItem("posts"))||[];
 
 posts.unshift({
 title:title,
@@ -111,16 +244,35 @@ content:content
 
 localStorage.setItem("posts",JSON.stringify(posts));
 
-document.getElementById("titleInput").value="";
-document.getElementById("contentInput").value="";
+renderPosts();
+
+}
+
+
+function editPost(i){
+
+const posts=JSON.parse(localStorage.getItem("posts"));
+
+const newTitle=prompt("Sửa tiêu đề",posts[i].title);
+
+const newContent=prompt("Sửa nội dung",posts[i].content);
+
+posts[i].title=newTitle;
+
+posts[i].content=newContent;
+
+localStorage.setItem("posts",JSON.stringify(posts));
 
 renderPosts();
 
 }
 
+
 function deletePost(i){
 
-const posts = JSON.parse(localStorage.getItem("posts")) || [];
+if(!confirm("Xóa bài này?")) return;
+
+const posts=JSON.parse(localStorage.getItem("posts"));
 
 posts.splice(i,1);
 
@@ -130,58 +282,9 @@ renderPosts();
 
 }
 
-function editPost(i){
-
-const posts = JSON.parse(localStorage.getItem("posts")) || [];
-
-let newTitle = prompt("Sửa tiêu đề",posts[i].title);
-let newContent = prompt("Sửa nội dung",posts[i].content);
-
-if(newTitle && newContent){
-
-posts[i].title = newTitle;
-posts[i].content = newContent;
-
-localStorage.setItem("posts",JSON.stringify(posts));
-
-renderPosts();
-
-}
-
-}
-
-function renderPosts(){
-
-const posts = JSON.parse(localStorage.getItem("posts")) || [];
-
-let html="";
-
-posts.forEach((p,i)=>{
-
-html += `
-<div class="post">
-
-<h2>${p.title}</h2>
-
-<p>${p.content}</p>
-
-${isAdmin ? `
-<button onclick="editPost(${i})">Sửa</button>
-<button onclick="deletePost(${i})">Xóa</button>
-` : ""}
-
-</div>
-`;
-
-});
-
-document.getElementById("posts").innerHTML = html;
-
-}
-
-renderPosts();
-
 </script>
 
 </body>
+
 </html>
+
