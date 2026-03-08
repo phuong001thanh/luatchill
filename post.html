@@ -1,0 +1,145 @@
+
+<!DOCTYPE html>
+<html>
+
+<head>
+
+<meta charset="UTF-8">
+<title>Bài viết - LUẬT CHILL</title>
+
+<style>
+
+/* BODY */
+
+body{
+margin:0;
+background:#f4f6fb;
+font-family:Arial;
+}
+
+/* HEADER */
+
+.topbar{
+background:linear-gradient(135deg,#5f9cff,#4facfe);
+display:grid;
+grid-template-columns:1fr auto 1fr;
+align-items:center;
+padding:18px;
+}
+
+/* Nút quay lại */
+
+.backBtn{
+justify-self:start;
+color:white;
+text-decoration:none;
+font-size:16px;
+}
+
+/* Logo + chữ */
+
+.logoTitle{
+display:flex;
+align-items:center;
+gap:10px;
+justify-self:center;
+font-family:"Times New Roman",serif;
+}
+
+.logo{
+width:35px;
+}
+
+.logoTitle h1{
+margin:0;
+font-size:32px;
+color:white;
+}
+
+/* KHUNG BÀI VIẾT */
+
+.postContainer{
+max-width:850px;
+margin:50px auto;
+background:white;
+padding:40px;
+border-radius:12px;
+box-shadow:0 10px 30px rgba(0,0,0,0.08);
+}
+
+/* TIÊU ĐỀ */
+
+.postContainer h1{
+font-size:32px;
+margin-bottom:25px;
+}
+
+/* NỘI DUNG */
+
+.postContent{
+font-size:18px;
+line-height:1.8;
+}
+
+/* ẢNH */
+
+.postContent img{
+max-width:100%;
+display:block;
+margin:25px auto;
+border-radius:8px;
+}
+
+</style>
+
+</head>
+
+<body onload="loadPost()">
+
+<header class="topbar">
+
+<a href="index.html" class="backBtn">← Trang chủ</a>
+
+<div class="logoTitle">
+<img src="can.png" class="logo">
+<h1>LUẬT CHILL</h1>
+</div>
+
+<div></div>
+
+</header>
+
+
+<div class="postContainer">
+
+<h1 id="title"></h1>
+
+<div id="content" class="postContent"></div>
+
+</div>
+
+
+<script>
+
+function loadPost(){
+
+const params = new URLSearchParams(window.location.search);
+const id = params.get("id");
+
+const posts = JSON.parse(localStorage.getItem("posts")) || [];
+
+const post = posts[id];
+
+if(!post) return;
+
+document.getElementById("title").innerText = post.title;
+document.getElementById("content").innerHTML = post.content;
+
+}
+
+</script>
+
+</body>
+
+</html>
+
