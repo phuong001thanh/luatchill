@@ -97,6 +97,30 @@ postList.appendChild(div);
 
 function addPost(){
 
+const title = document.getElementById("titleInput").value;
+const content = document.getElementById("contentInput").value;
+
+if(!title || !content){
+alert("Nhập đầy đủ tiêu đề và nội dung");
+return;
+}
+
+const posts = JSON.parse(localStorage.getItem("posts")) || [];
+
+posts.unshift({
+title:title,
+content:content
+});
+
+localStorage.setItem("posts",JSON.stringify(posts));
+
+document.getElementById("titleInput").value="";
+document.getElementById("contentInput").value="";
+
+renderPosts();
+
+}
+
 let title=document.getElementById("titleInput").value;
 
 let content=document.getElementById("contentInput").value;
@@ -205,5 +229,6 @@ function closeForm(){
 document.getElementById("formBox").style.display="none";
 
 }
+
 
 render();
