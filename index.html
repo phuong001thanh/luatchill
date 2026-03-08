@@ -128,7 +128,20 @@ cursor:pointer;
 
 <div class="container">
 
-<div id="adminPanel">
+<div id="adminPanel" style="display:none; margin-bottom:20px;">
+
+<h3>Đăng bài mới</h3>
+
+<input id="titleInput" placeholder="Tiêu đề bài viết" style="width:100%; padding:8px; margin-bottom:10px;">
+
+<textarea id="contentInput" placeholder="Nội dung bài viết" style="width:100%; height:150px; padding:8px;"></textarea>
+
+<br><br>
+
+<button onclick="addPost()">Đăng bài</button>
+<button onclick="logoutAdmin()">Thoát admin</button>
+
+</div>
 
 <button onclick="addPost()">➕ Đăng bài</button>
 <button onclick="logoutAdmin()">🔙 Thoát admin</button>
@@ -274,4 +287,5 @@ renderPosts();
 </body>
 
 </html>
+
 
