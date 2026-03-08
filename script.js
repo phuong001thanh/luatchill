@@ -1,3 +1,5 @@
+let isAdmin = false;
+
 let posts=JSON.parse(localStorage.getItem("posts"))||[];
 
 let admin=false;
@@ -231,3 +233,4 @@ document.getElementById("formBox").style.display="none";
 }
 
 render();
+
